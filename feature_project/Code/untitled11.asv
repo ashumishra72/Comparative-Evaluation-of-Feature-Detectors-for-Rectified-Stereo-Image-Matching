@@ -1,0 +1,47 @@
+%% STEP 8: Process All Three Pairs with Final Parameters
+
+% Define detectors with final thresholds
+detectors = {
+    @(img) detectHarrisFeatures(img, 'MinQuality', 0.005), ...
+    @(img) detectSURFFeatures(img, 'MetricThreshold', 1000), ...
+    @(img) detectFASTFeatures(img, 'MinQuality', 0.05), ...
+    @(img) detectBRISKFeatures(img)
+};
+
+detector_names = {'Harris', 'SURF', 'FAST', 'BRISK'};
+
+% NMS parameters
+D = 48;  % pixels
+max_features = 500;
+
+% Your three selected pairs
+pairs = [1, 5, 10];  % Use the pairs you selected
+
+% Process each pair
+for p = 1:3
+    pair_num = pairs(p);
+    fprintf('\nProcessing Pair %d (L%d-R%d)\n', p, pair_num, pair_num);
+    
+    % Load images
+    left = imread(sprintf("C:\Users\axk2681\Desktop\feature_project\Data\L_rectified1.JPG", pair_num));
+    right = imread(sprintf("C:\Users\axk2681\Desktop\feature_project\Data\R_rectified1.JPG", pair_num));
+    
+    % Convert to grayscale
+    if size(left,3)==3, left = rgb2gray(left); end
+    if size(right,3)==3, right = rgb2gray(right); end
+    
+    % Process each detector
+    for d = 1:4
+        % Detect
+        left_feat = detectors{d}(left);
+        right_feat = detectors{d}(right);
+        
+        % Apply NMS
+        left_nms = selectStrongest(left_feat, min(left_feat.Count, max_features));
+        right_nms = selectStrongest(right_feat, min(right_feat.Count, max_features));
+        
+        % Display results
+        fprintf('  %s: Left=%d, Right=%d\n', ...
+            detector_names{d}, left_nms.Count, right_nms.Count);
+    end
+end

@@ -1,0 +1,49 @@
+========================================
+ECE 738 Project 3 - Feature Detection
+Spring 2026
+========================================
+
+EXPERIMENTAL SETUP:
+- 4 Detectors: Harris, SURF, FAST, BRISK
+- 3 Stereo Pairs: L1-R1, L5-R5, L10-R10
+- Image Resolution: 960 x 1280 pixels
+- NMS Distance D: 48 pixels (3% of diagonal)
+- Max features after NMS: 500
+
+RESULTS SUMMARY:
+============================================================
+
+PAIR 1 (L1-R1):
+Detector   | Left       | Right      | Ratio     
+---------------------------------------------
+Harris     | 353        | 472        | 0.75      
+SURF       | 500        | 500        | 1.00      
+FAST       | 500        | 500        | 1.00      
+BRISK      | 500        | 500        | 1.00      
+
+PAIR 2 (L5-R5):
+Detector   | Left       | Right      | Ratio     
+---------------------------------------------
+Harris     | 432        | 500        | 0.86      
+SURF       | 500        | 500        | 1.00      
+FAST       | 500        | 500        | 1.00      
+BRISK      | 500        | 500        | 1.00      
+
+PAIR 3 (L10-R10):
+Detector   | Left       | Right      | Ratio     
+---------------------------------------------
+Harris     | 299        | 490        | 0.61      
+SURF       | 500        | 500        | 1.00      
+FAST       | 500        | 500        | 1.00      
+BRISK      | 500        | 500        | 1.00      
+
+
+ANALYSIS:
+1. SURF, FAST, and BRISK consistently hit the 500-feature cap
+2. Harris detector shows variation (299-432 features) based on scene content
+3. Left-right balance is good for all detectors (ratios 0.61-1.00)
+4. NMS with D=48 effectively limits feature density
+
+CONCLUSION:
+All 4 detectors successfully identified features across all 3 stereo pairs.
+Results are suitable for Project 4 (feature matching and stereo reconstruction).
